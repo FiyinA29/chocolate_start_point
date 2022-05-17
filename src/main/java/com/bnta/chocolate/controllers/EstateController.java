@@ -7,11 +7,10 @@ import com.bnta.chocolate.repositories.EstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("estates")// localhost:8080/estates
@@ -23,5 +22,18 @@ public class EstateController {
     @GetMapping
     public ResponseEntity<List<Estate>> getAllEstates() {
         return new ResponseEntity<>(estateRepository.findAll(), HttpStatus.OK);
+    }
+
+    // SHOW
+    @GetMapping(value = "/{id}") //localhost:8080/estates/1
+    public ResponseEntity<Optional<Estate>> getPet(@PathVariable Long id){
+        return new ResponseEntity<>(estateRepository.findById(id), HttpStatus.OK);
+    }
+
+    // POST
+    @PostMapping //POST localhost:8080/estates
+    public ResponseEntity<Estate> createPet(@RequestBody Estate newEstate){
+        estateRepository.save(newEstate);
+        return new ResponseEntity<>(newEstate, HttpStatus.CREATED);
     }
 }
